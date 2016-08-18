@@ -53,7 +53,7 @@ function altfunc.dump(obj)
                 return false
             end
         end
-        return false, count
+        return true, count
     end
 
     dump_obj = function(obj, layer)
