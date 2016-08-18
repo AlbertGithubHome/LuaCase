@@ -1,38 +1,66 @@
 
+-- 为了避免复杂的结构，这里只实现单一继承
 function class(classname, super)
+
+    -- 子类继承
+    local function inherit_calss(sub, super)
+        -- 当前已经是一个类
+        if sub._is_class then
+            return false
+        end
+
+        -- 指定的父类不是类
+        if super and not super._is_class then
+            return false
+        end
+
+        -- 不能指定自己为父类
+        if sub == super then
+            return false
+        end
+
+        -- 字符类关系赋值
+        sub._super = super;
+        sub._is_class = true;
+
+        -- 设置元表来表现继承关系
+        setmetatable(sub, {__index = super})
+    end
+
+    local function recursive_exec(sub, funcname, ...)
+        if sub._super then
+            recursive_exec(sub._super, funcname, unpack(arg));
+        end
+
+        local func = rawget(sub, funcName);
+        if func then
+            func(sub, unpack(arg));
+        end
+
+    end
+
     local class_type={};
+    function class_type.new(...)    -- 此处声明成class_type.new指的斟酌一下，class_type:new也可以，需要考虑调用方便
+        local obj = {}
+        setmetatable(obj, {__index = class_type})
 
-    function class_type:new(...) 
-        setmetatable(class_type, {__index = super})
+        -- 执行递归函数
+        do
+            recursive_exec(obj, "ctor", unpack(arg));     --构造函数
+            recursive_exec(obj, "init", unpack(arg));     --初始化函数
+        end
+        return obj
     end
-    
+
+    class_type._classname = classname;
+    -- 生成子类
+    inherit_calss(class_type, super)
+    -- 返回子类类型
+    return class_type
 end
 
-
-local tab = {}
-function tab.haha(param)
-    print(param)
-end
-
-print(tab)
-print(tab:haha("hehe"))
-
-
-function f_rev( ... )
-    for k,v in ipairs(arg) do
-        print(k,v)
-    end
-end
-
-function f_rec( ... )
-    f_rev(unpack(arg))
-    print("\n", unpack(arg))
-    print(arg.n)
-     print(arg)
-end
-
-f_rec(2)
-
-local num = nil + 1
-print(num)
-
+-- 测试class
+--[[
+local baseclass = class("base_c")
+print(baseclass._classname)
+]]
