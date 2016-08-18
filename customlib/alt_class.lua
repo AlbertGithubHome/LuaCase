@@ -1,8 +1,4 @@
 
-
-
-
-
 function class(classname, super)
     local class_type={};
 
