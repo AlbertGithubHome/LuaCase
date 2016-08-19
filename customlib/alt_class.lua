@@ -29,7 +29,7 @@ function class(classname, super)
 
     local function recursive_exec(sub, obj, funcname, ...)
         if sub._super then
-            recursive_exec(sub._super, funcname, unpack(arg));
+            recursive_exec(sub._super, obj, funcname, unpack(arg));
         end
 
         local func = rawget(sub, funcname);
