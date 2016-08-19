@@ -25,6 +25,8 @@ function class(classname, super)
 
         -- 设置元表来表现继承关系
         setmetatable(sub, {__index = super})
+
+        return true
     end
 
     local function recursive_exec(sub, obj, funcname, ...)
