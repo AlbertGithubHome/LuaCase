@@ -54,7 +54,7 @@ function class(classname, super)
 
     class_type._classname = classname;
     -- 生成子类
-    inherit_calss(class_type, super)
+    inherit_calss(class_type, super);
     -- 返回子类类型
     return class_type
 end
