@@ -1,3 +1,9 @@
+--[[
+@action : define class, generate object
+@params : class name, father class that can be nil
+@return : return a class, using function new can return object
+]]
+
 -- 为了避免复杂的结构，这里只实现单一继承
 function class(classname, super)
 
