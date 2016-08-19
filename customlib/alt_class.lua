@@ -1,25 +1,16 @@
-
 -- 为了避免复杂的结构，这里只实现单一继承
 function class(classname, super)
 
     -- 子类继承
     local function inherit_calss(sub, super)
-        -- 当前已经是一个类
-        if sub._is_class then
+        
+        if (sub._is_class) or     -- 当前已经是一个类
+            (sub == super) or     -- 不能指定自己为父类
+            (super and not super._is_class) then    -- 指定的父类不是类
             return false
         end
 
-        -- 指定的父类不是类
-        if super and not super._is_class then
-            return false
-        end
-
-        -- 不能指定自己为父类
-        if sub == super then
-            return false
-        end
-
-        -- 字符类关系赋值
+        -- 父子类关系赋值
         sub._super = super;
         sub._is_class = true;
 
@@ -45,7 +36,6 @@ function class(classname, super)
     function class_type.new(...)    -- 此处声明成class_type.new指的斟酌一下，class_type:new也可以，需要考虑调用方便
         local obj = {}
         setmetatable(obj, {__index = class_type})
-
         -- 执行递归函数
         do
             recursive_exec(class_type, obj, "ctor", unpack(arg));     --构造函数
