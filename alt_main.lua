@@ -1,5 +1,6 @@
 
 -- 引入自定义函数
+require("customlib/alt_type")
 require("customlib/alt_class")
 require("customlib/alt_dump")
 
