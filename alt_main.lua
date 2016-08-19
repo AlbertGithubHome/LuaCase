@@ -8,3 +8,16 @@ require("alt_test")
 
 local NBaseClass = class("NBaseClass")
 print(NBaseClass._classname)
+
+function NBaseClass:ctor()
+    print("this is a base class")
+end
+
+print(NBaseClass.ctor)
+
+local NObj = NBaseClass.new()
+
+print(NObj.ctor)
+
+--local subClass = class("subClass", NBaseClass)
+--local subObj = subClass.new()

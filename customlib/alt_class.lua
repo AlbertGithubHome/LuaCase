@@ -27,14 +27,14 @@ function class(classname, super)
         setmetatable(sub, {__index = super})
     end
 
-    local function recursive_exec(sub, funcname, ...)
+    local function recursive_exec(sub, obj, funcname, ...)
         if sub._super then
             recursive_exec(sub._super, funcname, unpack(arg));
         end
 
-        local func = rawget(sub, funcName);
+        local func = rawget(sub, funcname);
         if func then
-            func(sub, unpack(arg));
+            func(obj, unpack(arg));
         end
 
     end
@@ -46,8 +46,8 @@ function class(classname, super)
 
         -- 执行递归函数
         do
-            recursive_exec(obj, "ctor", unpack(arg));     --构造函数
-            recursive_exec(obj, "init", unpack(arg));     --初始化函数
+            recursive_exec(class_type, obj, "ctor", unpack(arg));     --构造函数
+            recursive_exec(class_type, obj, "init", unpack(arg));     --初始化函数
         end
         return obj
     end
