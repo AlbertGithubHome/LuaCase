@@ -14,6 +14,11 @@ function NBaseClass:ctor()
     print("this is a base class")
 end
 
+function NBaseClass:init()
+    print("this is init of base class")
+end
+
+
 --print(NBaseClass.ctor)
 
 --local NObj = NBaseClass.new()
@@ -24,6 +29,10 @@ local subClass = class("subClass", NBaseClass)
 print(subClass._classname)
 function subClass:ctor()
     print("this is a sub class")
+end
+
+function subClass:init()
+    print("this is init of sub class")
 end
 
 local subObj = subClass.new()
