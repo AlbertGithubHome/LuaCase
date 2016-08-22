@@ -31,8 +31,13 @@ function subClass:ctor()
     print("this is a sub class")
 end
 
-function subClass:init()
+function subClass:init(x, y)
     print("this is init of sub class")
+    self.x = x;
+    self.y = y;
 end
 
-local subObj = subClass.new()
+local subObj = subClass.new(2,3)
+
+print(subObj.x)
+print(subObj.y)
