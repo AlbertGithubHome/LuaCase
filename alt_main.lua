@@ -41,3 +41,8 @@ local subObj = subClass.new(2,3)
 
 print(subObj.x)
 print(subObj.y)
+
+local subObj2 = subClass.new(999,"what")
+
+print(subObj2.x)
+print(subObj2.y)
