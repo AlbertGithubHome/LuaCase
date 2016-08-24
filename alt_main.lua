@@ -3,6 +3,7 @@
 require("customlib/alt_type")
 require("customlib/alt_class")
 require("customlib/alt_dump")
+require("customlib/alt_unionfunc")
 
 -- 引入测试程序
 require("alt_test")
@@ -46,3 +47,16 @@ local subObj2 = subClass.new(999,"what")
 
 print(subObj2.x)
 print(subObj2.y)
+
+function union_test()
+    print("this is a primary union test")
+end
+
+local function sec_func()
+    print("this is second function")
+end
+
+unionfunc("union_test", sec_func)
+
+-- run to test
+union_test()
