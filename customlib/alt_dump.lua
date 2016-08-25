@@ -118,15 +118,15 @@ print(altfunc.dump(obj))
 local t = {
     a = 1,
     b = 2,
-    [1] = 1,
-    ["1"] =2,
+    [1] = 34,
+    ["1"] =56,
     pos = {
         x = 100,
         y = 200,
         z = 400,
         target = {
             x = 666,
-            y = 777,
+            y = 456,
             src = "name"
         }
     },  
@@ -136,6 +136,11 @@ local t = {
         print("this is a function")
     end,
     ["key"] = "value",
+    [98] = {
+        name = "albert",
+        age = "18",
+    },
+    ["98"] = {},
 }
 
 
@@ -183,7 +188,7 @@ function altfunc.dumptree(obj, width)
 
     local function dump_key(key)
         if type(key) == "number" then
-            return key .. ") "
+            return key .. "] "
         elseif type(key) == "string" then
             return tostring(key).. ": "
         end
@@ -219,12 +224,15 @@ function altfunc.dumptree(obj, width)
         for k, v in pairs(obj) do
             local key_name = dump_key(k)
             if type(v) == "table" then
-                key_name = string.sub(key_name, 1, -3);
                 key_name = key_name.."\n"
             end
-            tokens[#tokens + 1] = make_indent(layer, cur_count == max_count) 
-            .. key_name .. dump_val(v, layer)
+            table.insert(tokens, make_indent(layer, cur_count == max_count) .. key_name .. dump_val(v, layer))
             cur_count = cur_count + 1
+        end
+
+        -- 处理空table
+        if max_count == 0 then
+            table.insert(tokens, make_indent(layer, true) .. "{ }")
         end
 
         return table.concat(tokens, "\n")
@@ -234,10 +242,9 @@ function altfunc.dumptree(obj, width)
         return "the params you input is "..type(obj)..
         ", not a table, the value is --> "..tostring(obj)
     end
-    print("root-->"..tostring(obj))
+    
     width = width or 2
-
-    return dump_obj(obj, 0)
+    return "root-->"..tostring(obj).."\n"..dump_obj(obj, 0)
 end
 
 print(altfunc.dumptree(t, 2)) 
