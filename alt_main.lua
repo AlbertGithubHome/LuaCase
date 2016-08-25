@@ -4,6 +4,7 @@ require("customlib/alt_type")
 require("customlib/alt_class")
 require("customlib/alt_dump")
 require("customlib/alt_unionfunc")
+require("customlib/alt_common")
 
 -- 引入测试程序
 require("alt_test")
@@ -60,3 +61,5 @@ unionfunc("union_test", sec_func)
 
 -- run to test
 union_test()
+
+show_mem_utilization()
