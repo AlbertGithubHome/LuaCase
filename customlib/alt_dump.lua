@@ -154,8 +154,8 @@ function altfunc.dumptree(obj, width)
     local end_flag = {};
 
     local function make_indent(layer, is_end)
-        --local subIndent = string.rep("  ", width)
-        --local indent = string.rep("│"..subIndent, layer - 1)
+        -- local subIndent = string.rep("  ", width)
+        -- local indent = string.rep("│"..subIndent, layer - 1)
 
         local subIndent = string.rep("  ", width)
         local indent = "";
@@ -222,7 +222,8 @@ function altfunc.dumptree(obj, width)
                 key_name = string.sub(key_name, 1, -3);
                 key_name = key_name.."\n"
             end
-            tokens[#tokens + 1] = make_indent(layer, cur_count == max_count) .. key_name .. dump_val(v, layer)
+            tokens[#tokens + 1] = make_indent(layer, cur_count == max_count) 
+            .. key_name .. dump_val(v, layer)
             cur_count = cur_count + 1
         end
 
@@ -230,10 +231,10 @@ function altfunc.dumptree(obj, width)
     end
 
     if type(obj) ~= "table" then
-        return "the params you input is "..type(obj)..", not a table, the value is --> "..tostring(obj)
+        return "the params you input is "..type(obj)..
+        ", not a table, the value is --> "..tostring(obj)
     end
     print("root-->"..tostring(obj))
-	print("│")
     width = width or 2
 
     return dump_obj(obj, 0)
