@@ -28,7 +28,7 @@ function isthread(t)
     return type(t) == "function"
 end
 
-function istable(t)
+function thread(t)
     return type(t) == "thread"
 end
 

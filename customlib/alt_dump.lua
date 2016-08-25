@@ -1,5 +1,6 @@
 -- alt_dump.lua 
 
+
 -- 全局函数表
 altfunc = altfunc or {}
 
@@ -113,3 +114,134 @@ local obj = {
 print(altfunc.dump(obj)) 
 
 --]]
+
+local t = {
+    a = 1,
+    b = 2,
+    [1] = 1,
+    ["1"] =2,
+    pos = {
+        x = 100,
+        y = 200,
+        z = 400,
+        target = {
+            x = 666,
+            y = 777,
+            src = "name"
+        }
+    },  
+    [88] = 88888,
+    [9.7] = 22222,
+    func = function()
+        print("this is a function")
+    end,
+    ["key"] = "value",
+}
+
+
+--[[
+
+┌─┬─┐
+├─┼─┤
+└─┴─┘
+
+]]
+
+function altfunc.dumptree(obj, width)
+
+    -- 递归打印函数
+    local dump_obj;
+
+    local function make_indent(layer, is_end)
+        local subIndent = string.rep("  ", width)
+        local indent = string.rep("│"..subIndent, layer - 1)
+        
+        if is_end then
+            return indent.."└"..string.rep("─", width).." "
+        else
+            return indent.."├"..string.rep("─", width).." "
+        end
+    end
+
+    local function make_quote(str)
+        str = string.gsub(str, "\\","\\\\")
+        return string.format("%q", str)
+    end
+
+    local function dump_key(key)
+        if type(key) == "number" then
+            return key .. ") "
+        elseif type(key) == "string" then
+            return tostring(key).. ": "
+        end
+    end
+
+    local function dump_val(val, layer)
+        if type(val) == "table" then
+            return dump_obj(val, layer)
+        elseif type(val) == "string" then
+            return make_quote(val)
+        else
+            return tostring(val)
+        end
+    end
+
+    local function is_array(obj)
+        local count = 0
+        for k, v in pairs(obj) do
+            count = count + 1
+        end
+        for i = 1, count do
+            if obj[i] == nil then
+                return false
+            end
+        end
+        return true, count
+    end
+
+    local function count_elements(obj)
+        local count = 0
+        for k, v in pairs(obj) do
+            count = count + 1
+        end
+        return count
+    end
+
+    dump_obj = function(obj, layer)
+        if type(obj) ~= "table" then
+            return count_elements(obj)
+        end
+
+        layer = layer + 1
+        local tokens = {}
+
+        local max_count = count_elements(obj)
+        local cur_count = 1
+        for k, v in pairs(obj) do
+            local key_name = dump_key(k)
+            if type(v) == "table" then
+                key_name = string.sub(key_name, 1, -3);
+                key_name = key_name.."\n"
+            end
+            tokens[#tokens + 1] = make_indent(layer, cur_count == max_count) .. key_name .. dump_val(v, layer)
+            cur_count = cur_count + 1
+        end
+
+        return table.concat(tokens, "\n")
+    end
+
+    if type(obj) ~= "table" then
+        return "the params you input is "..type(obj)..", not a table, the value is --> "..tostring(obj)
+    end
+    print("root-->"..tostring(obj))
+	print("│")
+    width = width or 2
+
+    return dump_obj(obj, 0)
+end
+
+print(altfunc.dumptree(t, 2)) 
+--print(altfunc.dump(t)) 
+
+--print(altfunc.dumptree(t)) 
+
