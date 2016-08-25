@@ -151,10 +151,23 @@ function altfunc.dumptree(obj, width)
 
     -- 递归打印函数
     local dump_obj;
+    local end_flag = {};
 
     local function make_indent(layer, is_end)
+        --local subIndent = string.rep("  ", width)
+        --local indent = string.rep("│"..subIndent, layer - 1)
+
         local subIndent = string.rep("  ", width)
-        local indent = string.rep("│"..subIndent, layer - 1)
+        local indent = "";
+        end_flag[layer] = is_end;
+        local subIndent = string.rep("  ", width)
+        for index = 1, layer - 1 do
+            if end_flag[index] then
+                indent = indent.." "..subIndent
+            else
+                indent = indent.."|"..subIndent
+            end
+        end
         
         if is_end then
             return indent.."└"..string.rep("─", width).." "
@@ -186,19 +199,6 @@ function altfunc.dumptree(obj, width)
         end
     end
 
-    local function is_array(obj)
-        local count = 0
-        for k, v in pairs(obj) do
-            count = count + 1
-        end
-        for i = 1, count do
-            if obj[i] == nil then
-                return false
-            end
-        end
-        return true, count
-    end
-
     local function count_elements(obj)
         local count = 0
         for k, v in pairs(obj) do
@@ -214,7 +214,6 @@ function altfunc.dumptree(obj, width)
 
         layer = layer + 1
         local tokens = {}
-
         local max_count = count_elements(obj)
         local cur_count = 1
         for k, v in pairs(obj) do
@@ -241,6 +240,7 @@ function altfunc.dumptree(obj, width)
 end
 
 print(altfunc.dumptree(t, 2)) 
+--print(altfunc.dumptree(obj, 2)) 
 --print(altfunc.dump(t)) 
 
 --print(altfunc.dumptree(t)) 
