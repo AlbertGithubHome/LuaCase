@@ -253,3 +253,29 @@ print(altfunc.dumptree(t, 2))
 
 --print(altfunc.dumptree(t)) 
 
+--[[
+root-->table: 0033F418
+├── a: 1
+├── b: 2
+├── 9.7] 22222
+├── 1] 34
+├── 98] 
+|    ├── name: "albert"
+|    └── age: "18"
+├── key: "value"
+├── func: function: 0033A850
+├── 88] 88888
+├── 98: 
+|    └── { }
+├── 1: 56
+└── pos: 
+     ├── y: 200
+     ├── x: 100
+     ├── target: 
+     |    ├── y: 456
+     |    ├── x: 666
+     |    └── src: "name"
+     └── z: 400
+
+--]]
+
