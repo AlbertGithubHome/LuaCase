@@ -127,7 +127,8 @@ local t = {
         target = {
             x = 666,
             y = 456,
-            src = "name"
+            src = "name",
+            dest = nil
         }
     },  
     [88] = 88888,
