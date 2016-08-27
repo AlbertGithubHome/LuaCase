@@ -20,8 +20,15 @@ function altfunc.dump(obj)
     end
 
     local function make_quote(str)
-        str = string.gsub(str, "\\","\\\\")
-        return string.format("%q", str)
+        --str = string.gsub(str, "\\","\\\\")
+        --return string.format("%q", str)
+        return string.gsub(str, "[%c\\\"]", {  
+            ["\t"] = "\\t",  
+            ["\r"] = "\\r",  
+            ["\n"] = "\\n",  
+            ["\""] = "\\\"",  
+            ["\\"] = "\\\\",  
+        }) 
     end
 
     local function dump_key(key)
@@ -125,10 +132,13 @@ local t = {
         y = 200,
         z = 400,
         target = {
-            x = 666,
-            y = 456,
+            pos = {
+                x = 666,
+                y = 456,
+            },
             src = "name",
-            dest = nil
+            dest = nil,
+            from = "china \n beijing"
         }
     },  
     [88] = 88888,
@@ -146,11 +156,9 @@ local t = {
 
 
 --[[
-
 ┌─┬─┐
 ├─┼─┤
 └─┴─┘
-
 ]]
 
 function altfunc.dumptree(obj, width)
@@ -183,8 +191,14 @@ function altfunc.dumptree(obj, width)
     end
 
     local function make_quote(str)
-        str = string.gsub(str, "\\","\\\\")
-        return string.format("%q", str)
+        str = string.gsub(str, "[%c\\\"]", {
+            ["\t"] = "\\t",
+            ["\r"] = "\\r",
+            ["\n"] = "\\n",
+            ["\""] = "\\\"",
+            ["\\"] = "\\\\",
+        })
+        return "\""..str.."\""
     end
 
     local function dump_key(key)
@@ -227,7 +241,8 @@ function altfunc.dumptree(obj, width)
             if type(v) == "table" then
                 key_name = key_name.."\n"
             end
-            table.insert(tokens, make_indent(layer, cur_count == max_count) .. key_name .. dump_val(v, layer))
+            table.insert(tokens, make_indent(layer, cur_count == max_count) 
+                .. key_name .. dump_val(v, layer))
             cur_count = cur_count + 1
         end
 
@@ -248,14 +263,10 @@ function altfunc.dumptree(obj, width)
     return "root-->"..tostring(obj).."\n"..dump_obj(obj, 0)
 end
 
-print(altfunc.dumptree(t, 2)) 
---print(altfunc.dumptree(obj, 2)) 
---print(altfunc.dump(t)) 
-
---print(altfunc.dumptree(t)) 
+print(altfunc.dumptree(t))
 
 --[[
-root-->table: 0033F418
+root-->table: 0031D748
 ├── a: 1
 ├── b: 2
 ├── 9.7] 22222
@@ -264,7 +275,7 @@ root-->table: 0033F418
 |    ├── name: "albert"
 |    └── age: "18"
 ├── key: "value"
-├── func: function: 0033A850
+├── func: function: 00318140
 ├── 88] 88888
 ├── 98: 
 |    └── { }
@@ -273,10 +284,11 @@ root-->table: 0033F418
      ├── y: 200
      ├── x: 100
      ├── target: 
-     |    ├── y: 456
-     |    ├── x: 666
-     |    └── src: "name"
+     |    ├── src: "name"
+     |    ├── from: "china \n beijing"
+     |    └── pos: 
+     |         ├── y: 456
+     |         └── x: 666
      └── z: 400
-
 --]]
 
