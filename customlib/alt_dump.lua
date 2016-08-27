@@ -22,13 +22,14 @@ function altfunc.dump(obj)
     local function make_quote(str)
         --str = string.gsub(str, "\\","\\\\")
         --return string.format("%q", str)
-        return string.gsub(str, "[%c\\\"]", {  
-            ["\t"] = "\\t",  
-            ["\r"] = "\\r",  
-            ["\n"] = "\\n",  
-            ["\""] = "\\\"",  
-            ["\\"] = "\\\\",  
-        }) 
+        str = string.gsub(str, "[%c\\\"]", {
+            ["\t"] = "\\t",
+            ["\r"] = "\\r",
+            ["\n"] = "\\n",
+            ["\""] = "\\\"",
+            ["\\"] = "\\\\",
+        })
+        return "\""..str.."\""
     end
 
     local function dump_key(key)
@@ -264,6 +265,7 @@ function altfunc.dumptree(obj, width)
 end
 
 print(altfunc.dumptree(t))
+print(altfunc.dump(t))
 
 --[[
 root-->table: 0031D748
