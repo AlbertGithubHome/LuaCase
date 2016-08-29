@@ -65,3 +65,5 @@ union_test()
 show_mem_utilization()
 
 print(altfunc.dumptree(subObj2, 2)) 
+
+show_mem_utilization()
