@@ -36,7 +36,7 @@ end
 
 local t = {}
 
-local sourcestr = "04-06-19-05-1A-CC-0C-0A-09-1B-DD-1F-1A-11-5F-5A-44-AA-BB-65-68-28"
+local sourcestr = "2E-16-1E-1C-03-14-03-00-17-4B-58-54"
 print("\noutput capture using loop:") 
 
 local strret = ""
@@ -53,8 +53,8 @@ end
 --print(strret)
 
 local xxx =""
-local ss ="SSSSSSSSSSSSSSSSSSSS"
-for i=1,10 do
+local ss ="SSSSSSSSSSSSSSSSSSS"
+for i=1,17 do
     ---local cc = function_to(ss, i) ^ function_to(strret, i)
    -- xxx = xxx..string.format("%c", cc)
    --print(string.byte(ss, i))
