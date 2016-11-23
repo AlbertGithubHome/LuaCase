@@ -59,7 +59,7 @@ end
 
 unionfunc("union_test", sec_func)
 
--- run to test
+-- run to test, real a test
 union_test()
 
 show_mem_utilization()
