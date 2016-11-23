@@ -207,6 +207,8 @@ function altfunc.dumptree(obj, width)
             return key .. "] "
         elseif type(key) == "string" then
             return tostring(key).. ": "
+        else
+            return tostring(key).. ": "
         end
     end
 
