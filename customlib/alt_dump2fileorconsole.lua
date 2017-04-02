@@ -17,7 +17,7 @@ function dumptree2file(obj, file_name, width)
             if end_flag[index] then
                 indent = indent.." "..subIndent
             else
-                indent = indent.."|"..subIndent
+                indent = indent.."|"..subIndento
             end
         end
         
@@ -29,6 +29,7 @@ function dumptree2file(obj, file_name, width)
     end
 
     local function make_quote(str)
+        --[[
         str = string.gsub(str, "[%c\\\"]", {
             ["\t"] = "\\t",
             ["\r"] = "\\r",
@@ -37,6 +38,9 @@ function dumptree2file(obj, file_name, width)
             ["\\"] = "\\\\",
         })
         return "\""..str.."\""
+        --]]
+        -- 特殊字符串
+        return string.format("%q", str)
     end
 
     local function dump_key(key)
