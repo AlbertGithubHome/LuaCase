@@ -80,4 +80,5 @@ show_mem_utilization()
 
 -- test message dispatch
 MessageDispatchObject:public_broadcast_message("test", os.date())
+MessageDispatchObject:public_lookover()
 

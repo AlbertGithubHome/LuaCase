@@ -74,10 +74,10 @@ function ClassMessageDispatchMgr:public_lookover(classname)
     for message_type,value in pairs(observerlist) do
         if value then
             for k,observer_unit in pairs(value.observers) do
-                if observer_unit.observer and observer_unit.observer.__classname  and 
-                    (classname == nil or observer_unit.observer.__classname == classname) then
+                if observer_unit.observer and observer_unit.observer._classname  and 
+                    (classname == nil or observer_unit.observer._classname == classname) then
                     -- 打印对象的类名，消息类型，权重
-                    print(observer_1.observer.__classname, message_type, observer_unit.weight);
+                    print(observer_unit.observer._classname, message_type, observer_unit.weight);
                 end
             end
         end
