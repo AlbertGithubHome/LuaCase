@@ -5,7 +5,7 @@ require("customlib/alt_class")
 require("customlib/alt_dump")
 require("customlib/alt_unionfunc")
 require("customlib/alt_common")
-
+require("customlib/alt_message_dispatch")   -- 消息分发系统
 -- 引入测试程序
 require("alt_test")
 
@@ -17,7 +17,12 @@ function NBaseClass:ctor()
 end
 
 function NBaseClass:init()
+    MessageDispatchObject:public_add_observer_by_message_type(self, "test");
     print("this is init of base class")
+end
+
+function NBaseClass:test(param)
+    print("this is a base class test fuction", param)
 end
 
 
@@ -34,9 +39,14 @@ function subClass:ctor()
 end
 
 function subClass:init(x, y)
+    MessageDispatchObject:public_add_observer_by_message_type(self, "test");
     print("this is init of sub class")
     self.x = x;
     self.y = y;
+end
+
+function subClass:test(param)
+    print("this is a sub class test fuction", param)
 end
 
 local subObj = subClass.new(2,3)
@@ -67,3 +77,7 @@ show_mem_utilization()
 print(altfunc.dumptree(subObj2, 2)) 
 
 show_mem_utilization()
+
+-- test message dispatch
+MessageDispatchObject:public_broadcast_message("test", os.date())
+
