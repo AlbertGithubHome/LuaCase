@@ -1,14 +1,13 @@
 -- dump table content to file
-function dumptree2file(obj, file_name, width)
+function dumptree2file(obj, file_name, depth, width)
 
     -- 递归打印函数
     local dump_obj;
     local end_flag = {};
+    local table_flag = {};
+
 
     local function make_indent(layer, is_end)
-        -- local subIndent = string.rep("  ", width)
-        -- local indent = string.rep("│"..subIndent, layer - 1)
-
         local subIndent = string.rep("  ", width)
         local indent = "";
         end_flag[layer] = is_end;
@@ -17,7 +16,7 @@ function dumptree2file(obj, file_name, width)
             if end_flag[index] then
                 indent = indent.." "..subIndent
             else
-                indent = indent.."|"..subIndento
+                indent = indent.."|"..subIndent
             end
         end
         
@@ -29,16 +28,6 @@ function dumptree2file(obj, file_name, width)
     end
 
     local function make_quote(str)
-        --[[
-        str = string.gsub(str, "[%c\\\"]", {
-            ["\t"] = "\\t",
-            ["\r"] = "\\r",
-            ["\n"] = "\\n",
-            ["\""] = "\\\"",
-            ["\\"] = "\\\\",
-        })
-        return "\""..str.."\""
-        --]]
         -- 特殊字符串
         return string.format("%q", str)
     end
@@ -79,6 +68,12 @@ function dumptree2file(obj, file_name, width)
             return {}
         end
 
+        if type(value) == "table" and table_flag[value] == true then
+            return {duplicated_flag_break_loop = tostring(value)}
+        else
+            --table_flag[value] = true
+        end
+
         return value
     end
 
@@ -89,23 +84,27 @@ function dumptree2file(obj, file_name, width)
 
         layer = layer + 1
         local tokens = {}
-        local max_count = count_elements(obj)
-        local cur_count = 1
-        for k, v in pairs(obj) do
-            local key_name = dump_key(k)
-            if type(v) == "table" then
-                key_name = key_name.."\n"
-                v = break_deathloop(k, v)
+        if layer >= depth then -- 避免太深引起死循环
+            table.insert(tokens, make_indent(layer, true) .. "{ }")
+        else
+            local max_count = count_elements(obj)
+            local cur_count = 1
+            for k, v in pairs(obj) do
+                local key_name = dump_key(k)
+                if type(v) == "table" then
+                    key_name = key_name.."\n"
+                    v = break_deathloop(k, v)
+                end
+
+                table.insert(tokens, make_indent(layer, cur_count == max_count) 
+                    .. key_name .. dump_val(v, layer))
+                cur_count = cur_count + 1
             end
 
-            table.insert(tokens, make_indent(layer, cur_count == max_count) 
-                .. key_name .. dump_val(v, layer))
-            cur_count = cur_count + 1
-        end
-
-        -- 处理空table
-        if max_count == 0 then
-            table.insert(tokens, make_indent(layer, true) .. "{ }")
+            -- 处理空table
+            if max_count == 0 then
+                table.insert(tokens, make_indent(layer, true) .. "{ }")
+            end
         end
 
         return table.concat(tokens, "\n")
@@ -117,6 +116,7 @@ function dumptree2file(obj, file_name, width)
     end
 
     width = width or 2
+    depth = depth or 11
 
     if file_name == nil then
         return "root-->"..tostring(obj).."\n"..dump_obj(obj, 0)
