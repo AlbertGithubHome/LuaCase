@@ -25,7 +25,7 @@ function formatprint(argTable, outputLevel)
     local funcInfo = debug.getinfo(2);
     local shortSrc = "source: ..."..string.sub (funcInfo.source, -32);
     local currLine = tostring(funcInfo.currentline);
-    local funcName = "funcname: "..funcInfo.name;
+    local funcName = "funcname: "..(funcInfo.name or "c_function");
     local outputSt = "formatprint:"
 
     for k,v in pairs(argTable) do
